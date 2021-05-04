@@ -6,7 +6,7 @@ This document is discussing the .NET Metrics APIs design which implements the [O
 
 The OpenTelemetry Metrics APIs support reporting measurements about the execution of a computer program at run time. The Metrics APIs are designed explicitly for processing raw measurements, generally with the intent to produce continuous summaries of those measurements, efficiently and simultaneously.
 
-The OpenTelemetry architecture is splitting the measurement reporting part to a component called `APIs` and that is the part we are discussing here and proposing APIs for it. The other part is called `SDK` which will monitor, aggregate the Metrics measurements, and export the aggregated measurement to some backend. The SDK part will be implemented in the [OpenTelemetry .NET repo](https://github.com/open-telemetry/opentelemetry-dotnet) and will not be part of the .NET. The `SDK` will depend on the APIs we are going to expose in .NET.
+The OpenTelemetry architecture is splitting the measurement reporting part to a component called `APIs` and that is the part we are discussing here and proposing APIs for. The other part is called `SDK` which will monitor, aggregate the Metrics measurements, and export the aggregated measurement to some backend. The SDK part will be implemented in the [OpenTelemetry .NET repo](https://github.com/open-telemetry/opentelemetry-dotnet) and will not be part of .NET. The `SDK` will depend on the APIs we are going to expose in .NET.
 
 The proposed APIs will be used by the application or library authors to record metrics measurements. The APIs also include a listener which will allow listening to the recorded measurements events which can be used by the OpenTelemetry SDK (or other potential consumers) to aggregate the measurements and export them.
 
@@ -25,7 +25,7 @@ The Instrument is the type that will be used by the app and library authors to r
 
 There are two types of instruments:
 
-- The first type we'll call it just `Instrument` for simplicity. These instruments are called inside a request, meaning they have an associated distributed Context (with Span, Baggage, etc.). OpenTelemetry specs call this type of instrument a synchronous Instrument but we are trying to avoid confusion with the async feature of the .NET. The proposal here proposes three instrument classes of that type: `Counter` and `Histogram`.
+- The first type we'll call it just `Instrument` for simplicity. These instruments are called inside a request, meaning they have an associated distributed Context (with Span, Baggage, etc.). OpenTelemetry specs call this type of instrument a synchronous Instrument but we are trying to avoid confusion with the async feature of the .NET. The proposal here proposes three instrument classes of that type: `Counter`, `Gauge` and `Histogram`.
 - The second type is called `ObservableInstrument` which reports measurements by a callback, once per collection interval, and lacks Context. OpenTelemetry specs call this type of instrument an asynchronous Instrument but we are trying to avoid confusion with the async feature of the .NET. The proposal here is proposing three instrument classes of that type: `ObservableCounter`, `ObservableGauge`, and `ObservableUpDownCounter`.
 
 ### Meter
